@@ -1,0 +1,73 @@
+@model List<Service>
+@{
+    Layout = "_AdminLayout";
+    ViewBag.Title = "Hizmetler Yönetimi";
+    ViewBag.Subtitle = "Ana sayfa hizmet kutucuklarını ekle ve düzenle";
+    ViewBag.ActiveMenu = "homeservices";
+}
+
+<!-- HİZMET EKLE -->
+<div class="admin-card mb-4">
+    <div class="card-header">
+        <span><i class="fas fa-plus-circle me-2" style="color:#5cb85c;"></i>Yeni Hizmet Ekle</span>
+    </div>
+    <div class="card-body">
+        <form asp-action="CreateHomeService" asp-controller="Admin" method="post">
+            <div class="row g-3">
+                <div class="col-md-5">
+                    <label class="form-label" style="font-size:13px;font-weight:600;color:#475569;">Hizmet Adı</label>
+                    <input type="text" name="ServiceName" class="form-control" placeholder="Örn: Ücretsiz Eve Teslimat" style="border-radius:10px;font-size:14px;" />
+                </div>
+                <div class="col-md-5">
+                    <label class="form-label" style="font-size:13px;font-weight:600;color:#475569;">İkon URL</label>
+                    <input type="text" name="IconUrl" class="form-control" placeholder="/images/services/service1.png" style="border-radius:10px;font-size:14px;" />
+                </div>
+                <div class="col-md-2 d-flex align-items-end">
+                    <button type="submit" class="btn btn-green w-100">
+                        <i class="fas fa-plus me-1"></i> Ekle
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- HİZMET LİSTESİ -->
+<div class="admin-card">
+    <div class="card-header">
+        <span><i class="fas fa-concierge-bell me-2" style="color:#5cb85c;"></i>Hizmet Listesi</span>
+        <span style="font-size:13px;color:#94a3b8;">@Model.Count hizmet</span>
+    </div>
+    <div class="card-body p-0">
+        <table class="table admin-table mb-0">
+            <thead>
+                <tr>
+                    <th>İkon</th>
+                    <th>Hizmet Adı</th>
+                    <th>İşlem</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            <img src="@item.IconUrl" alt="@item.ServiceName"
+                                 style="width:44px;height:44px;object-fit:contain;mix-blend-mode:multiply;border-radius:8px;background:#f8f9fa;" />
+                        </td>
+                        <td style="font-weight:600;">@item.ServiceName</td>
+                        <td>
+                            <form asp-action="DeleteHomeService" asp-controller="Admin" method="post" class="d-inline"
+                                  onsubmit="return confirm('Bu hizmeti silmek istediğinize emin misiniz?')">
+                                <input type="hidden" name="id" value="@item.ServiceId" />
+                                <button type="submit" class="btn-icon btn-icon-delete" title="Sil">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

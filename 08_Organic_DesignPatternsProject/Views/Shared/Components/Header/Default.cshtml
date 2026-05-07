@@ -1,0 +1,141 @@
+@{
+    var ctrl = ViewContext.RouteData.Values["controller"]?.ToString();
+}
+        <!-- header section start -->
+        <header class="about_header position-relative">
+            <!-- top header start -->
+            <div class="top_header_main position-relative bg-white">
+                <div class="container d-none d-md-block">
+                    <div class="header_top d-flex align-items-center justify-content-between">
+                        <div class="header_top_content d-flex pt-2">
+                            <span class="shipping">99$'ın üzerindeki tüm siparişlerde ücretsiz kargo</span>
+                        </div>
+                        <div class="header_top_cont d-flex align-items-center pt-2">
+                            <a href="vendor.html"><span class="vendor me-4">Satıcı Ol</span></a>
+                            <a href="#"><span class="Order me-4">Sipariş Takibi</span></a>
+                            <a href="#"><span class="wish">İstek Listesi</span></a>
+                        </div>
+                    </div>
+                </div>
+                <!-- top header end -->
+                <!-- top inner navbar start -->
+                <div class="top_inner_main">
+                    <div class="top_inner_wrap">
+                        <div class="container">
+                            <div class="top_inner_content about_inner_cont d-flex justify-content-between align-items-center py-3">
+                                <div class="top_inner_logo d-flex justify-content-between align-items-center">
+                                    <a class="drop_bars text-dark me-4" href="#!" data-bs-toggle="offcanvas"
+                                       data-bs-target="#offcanvasScrolling" aria-controls="offcanvasScrolling"
+                                       aria-expanded="false" aria-label="Navigasyonu Aç/Kapat">
+                                        <i class="fas fa-bars"></i>
+                                    </a>
+                                    <a href="/Main/Index">
+                                        <img src="/organic-html/assets/images/logo/logo.png" alt="image_not_found">
+                                    </a>
+                                </div>
+                                <div class="top_inner_searchbar about_search position-relative d-none d-lg-block">
+                                    <input class="py-2 px-3 name=" search" type="search"
+                                           placeholder="Tümü   |   Ne arıyorsunuz?">
+                                    <span><i class="fas fa-search position-absolute"></i></span>
+                                </div>
+                                <div class="main_search_btn3 d-block d-lg-none ms-auto me-3" data-bs-toggle="collapse"
+                                     data-bs-target="#main_search_collapse" aria-expanded="false"
+                                     aria-controls="main_search_collapse">
+                                    <span><i class="fas fa-search position-absolute search_icon"></i></span>
+                                    <span><i class="fas fa-times search_close"></i></span>
+                                </div>
+                        <div class="navbar_user me-2">
+                            <div class="navbar_user_icon">
+                                <ul class="list-unstyled d-flex mb-0">
+                                    <li class="pe-2 position-relative">
+                                        <a href="/Admin/Index">
+                                            <i class="far fa-user" data-toggle="collapse" role="button"
+                                               data-target="#use_deropdown" aria-expanded="false"
+                                               aria-controls="use_deropdown"></i>
+                                        </a>
+                                    </li>
+                                    <li class="pe-2"><a href="#!"><i class="far fa-heart"></i></a></li>
+                                    <li>
+                                        <a href="/Cart/Index/">
+                                            <i class="fas fa-shopping-bag position-relative"
+                                               data-bs-toggle="offcanvas"
+                                               aria-controls="offcanvasRight"></i>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                            </div>
+                            <!-- mobile menubar start -->
+                            <div class="offcanvas offcanvas-start" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1"
+                                 id="offcanvasScrolling" aria-labelledby="offcanvasScrollingLabel">
+                                <div class="offcanvas-header">
+                                    <button type="button" class="btn-close mobile_menu_close text-reset"
+                                            data-bs-dismiss="offcanvas" aria-label="Kapat"></button>
+                                </div>
+                                <div class="offcanvas-body">
+                                    <ul class="navbar-nav main_menu_list m-auto">
+                                        <li class="nav-item pe-4">
+                                            <a class="nav-link @(ctrl == "Main" ? "active" : "")"
+                                               asp-controller="Main" asp-action="Index">Anasayfa</a>
+                                        </li>
+                                        <li class="nav-item pe-4">
+                                            <a class="nav-link @(ctrl == "Shop" ? "active" : "")"
+                                               asp-controller="Shop" asp-action="ShopList">Mağaza</a>
+                                        </li>
+                                        <li class="nav-item pe-4">
+                                            <a class="nav-link @(ctrl == "Cart" ? "active" : "")"
+                                               asp-controller="Cart" asp-action="Index">Sepet</a>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <!-- collapse search - start -->
+                    <div class="main_search_collapse collapse" id="main_search_collapse">
+                        <div class="main_search_form position-relative card">
+                            <div class="container">
+                                <form action="#">
+                                    <div class="form_item position-relative">
+                                        <input type="search" class="form-control rounded-pill py-3" name="search"
+                                               placeholder="Ürününüzü Arayın...">
+                                        <button type="submit" class="submit_btn"><i class="fas fa-search"></i></button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- collapse search - end -->
+                </div>
+                <!-- top inner navbar end -->
+                <!-- bottom header start -->
+                <div class="header_bottom_main header_border position-relative d-none d-lg-block">
+                    <div class="container">
+                        <nav class="navbar navbar-expand-lg navbar-light">
+                            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                                    aria-expanded="false" aria-label="Navigasyonu Aç/Kapat">
+                                <span class="navbar-toggler-icon"></span>
+                            </button>
+                            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                                <ul class="navbar-nav navbar_4 main_menu_list after_navbar">
+                                    <li class="nav-item nav_item_has_child px-2">
+                                        <a class="nav-link @(ctrl == "Main" ? "active" : "")"
+                                           asp-controller="Main" asp-action="Index">Anasayfa</a>
+                                    </li>
+                                    <li class="nav-item nav_item_has_child px-2">
+                                        <a class="nav-link @(ctrl == "Shop" ? "active" : "")"
+                                           asp-controller="Shop" asp-action="ShopList">Mağaza</a>
+                                    </li>
+                                    <li class="nav-item nav_item_has_child px-2">
+                                        <a class="nav-link @(ctrl == "Cart" ? "active" : "")"
+                                           asp-controller="Cart" asp-action="Index">Sepet</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </nav>
+                    </div>
+                </div>
+        </header>

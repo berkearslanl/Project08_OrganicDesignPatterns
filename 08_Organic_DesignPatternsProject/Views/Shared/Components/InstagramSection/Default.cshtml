@@ -1,0 +1,51 @@
+@model List<Gallery>
+<!-- instagram section start -->
+<style>
+    .instagram_image_content li {
+    width: 100%;
+    height: 220px; /* istediğin yüksekliği verebilirsin */
+    overflow: hidden;
+}
+
+.instagram_image_content li a {
+    display: block;
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+.instagram_image_content li img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+</style>
+<section class="instagram_section instagram_style_1 instagram_2 position-relative sec_space_xs_70"
+         data-aos="fade-up" data-aos-duration="1000">
+    <div class="container">
+        <div class="product_sec_sub_title d-flex justify-content-center align-items-center pb-2">
+            <i class="far fa-circle"></i>
+            <i class="far fa-circle"></i>
+            <i class="far fa-circle"></i>
+            <span class="px-2 text-uppercase">BİZİ TAKİP ET</span>
+            <i class="far fa-circle"></i>
+            <i class="far fa-circle"></i>
+            <i class="far fa-circle"></i>
+        </div>
+        <h2 class="instagram_title pb-5 text-center">Instagram'da Takip Et</h2>
+        <ul class="zoom-gallery instagram_image_content ul_li slideshow4_slider" data-slick='{"dots": false}'>
+            @foreach (var x in Model)
+            {
+                <li>
+                    <a class="popup_image" href="@x.ImageUrl">
+                        <img src="@x.ImageUrl" alt="Organik Dünya">
+                        <i class="fab fa-instagram"></i>
+                        <span>@@organikdunya</span>
+                    </a>
+                </li>
+            }
+        </ul>
+    </div>
+</section>
+<!-- instagram section end -->

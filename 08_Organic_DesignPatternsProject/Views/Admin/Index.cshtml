@@ -1,0 +1,98 @@
+@{
+    Layout = "_AdminLayout";
+    ViewBag.Title = "Dashboard";
+    ViewBag.Subtitle = "Genel bakış ve istatistikler";
+    ViewBag.ActiveMenu = "dashboard";
+}
+
+<!-- İSTATİSTİK KARTLARI -->
+<div class="row g-4 mb-4">
+    <div class="col-xl-3 col-md-6">
+        <div class="admin-card p-4 d-flex align-items-center gap-3">
+            <div style="width:52px;height:52px;background:#dcfce7;border-radius:14px;display:flex;align-items:center;justify-content:center;">
+                <i class="fas fa-shopping-bag" style="color:#16a34a;font-size:22px;"></i>
+            </div>
+            <div>
+                <div style="font-size:24px;font-weight:800;color:#1e293b;">@ViewBag.TotalOrders</div>
+                <div style="font-size:13px;color:#94a3b8;">Toplam Sipariş</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-md-6">
+        <div class="admin-card p-4 d-flex align-items-center gap-3">
+            <div style="width:52px;height:52px;background:#dbeafe;border-radius:14px;display:flex;align-items:center;justify-content:center;">
+                <i class="fas fa-box-open" style="color:#2563eb;font-size:22px;"></i>
+            </div>
+            <div>
+                <div style="font-size:24px;font-weight:800;color:#1e293b;">@ViewBag.TotalProducts</div>
+                <div style="font-size:13px;color:#94a3b8;">Toplam Ürün</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-md-6">
+        <div class="admin-card p-4 d-flex align-items-center gap-3">
+            <div style="width:52px;height:52px;background:#fef9c3;border-radius:14px;display:flex;align-items:center;justify-content:center;">
+                <i class="fas fa-envelope" style="color:#ca8a04;font-size:22px;"></i>
+            </div>
+            <div>
+                <div style="font-size:24px;font-weight:800;color:#1e293b;">@ViewBag.TotalSubscribers</div>
+                <div style="font-size:13px;color:#94a3b8;">Abone</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-md-6">
+        <div class="admin-card p-4 d-flex align-items-center gap-3">
+            <div style="width:52px;height:52px;background:#fce7f3;border-radius:14px;display:flex;align-items:center;justify-content:center;">
+                <i class="fas fa-lira-sign" style="color:#db2777;font-size:22px;"></i>
+            </div>
+            <div>
+                <div style="font-size:24px;font-weight:800;color:#1e293b;">@ViewBag.TotalRevenue</div>
+                <div style="font-size:13px;color:#94a3b8;">Toplam Gelir</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- SON SİPARİŞLER -->
+<div class="admin-card">
+    <div class="card-header">
+        <span><i class="fas fa-clock me-2" style="color:#5cb85c;"></i>Son Siparişler</span>
+        <a href="/Admin/Orders" style="font-size:13px;color:#5cb85c;text-decoration:none;font-weight:600;">
+            Tümünü Gör <i class="fas fa-arrow-right ms-1"></i>
+        </a>
+    </div>
+    <div class="card-body p-0">
+        <table class="table admin-table mb-0">
+            <thead>
+                <tr>
+                    <th>Sipariş No</th>
+                    <th>Müşteri</th>
+                    <th>Tutar</th>
+                    <th>Ödeme</th>
+                    <th>Durum</th>
+                    <th>Tarih</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (ViewBag.RecentOrders != null)
+                {
+                    foreach (var order in ViewBag.RecentOrders)
+                    {
+                        <tr>
+                            <td><span style="font-weight:700;color:#5cb85c;">#@order.OrderId</span></td>
+                            <td>@order.CustomerName</td>
+                            <td style="font-weight:600;">@order.TotalAmount.ToString("C2", new System.Globalization.CultureInfo("tr-TR"))</td>
+                            <td>@order.PaymentMethod</td>
+                            <td>
+                                <span class="status-badge @(order.Status == "Tamamlandı" ? "status-green" : order.Status == "Hazırlanıyor" ? "status-yellow" : "status-gray")">
+                                    @order.Status
+                                </span>
+                            </td>
+                            <td style="color:#94a3b8;">@order.CreatedAt.ToString("dd.MM.yyyy")</td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

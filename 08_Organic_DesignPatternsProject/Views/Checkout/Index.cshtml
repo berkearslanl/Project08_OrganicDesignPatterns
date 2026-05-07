@@ -1,0 +1,182 @@
+﻿@model _08_Organic_DesignPatternsProject.Models.CheckoutViewModel
+@{
+    Layout = null;
+    var cart = Model.Cart;
+    decimal total = cart?.CartItems?.Sum(x => x.Product.Price * x.Quantity) ?? 0;
+}
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sipariş Ver - Organik</title>
+    <link rel="stylesheet" href="/organic-html/assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/organic-html/assets/css/all.min.css">
+    <link rel="stylesheet" href="/organic-html/assets/css/style.css">
+</head>
+<body>
+
+    @await Component.InvokeAsync("Header")
+
+    <section class="py-5" style="background-color: #f8f9fa;">
+        <div class="container">
+            <h2 class="mb-4 fw-bold">Sipariş Ver</h2>
+
+            @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+            {
+                <div class="alert alert-danger">
+                    <i class="fas fa-exclamation-circle me-2"></i>@Model.ErrorMessage
+                </div>
+            }
+
+            <form asp-action="PlaceOrder" asp-controller="Checkout" method="post">
+                <div class="row g-4">
+
+                    <!-- SOL: Müşteri Bilgileri + Ödeme -->
+                    <div class="col-lg-7">
+
+                        <!-- Müşteri Bilgileri -->
+                        <div class="card border-0 shadow-sm mb-4">
+                            <div class="card-body p-4">
+                                <h5 class="fw-bold mb-3">
+                                    <i class="fas fa-user me-2" style="color:#5cb85c"></i>Müşteri Bilgileri
+                                </h5>
+                                <div class="mb-3">
+                                    <label class="form-label">Ad Soyad</label>
+                                    <input asp-for="CustomerName" class="form-control" placeholder="Ad Soyad" />
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">E-posta</label>
+                                    <input asp-for="CustomerEmail" class="form-control" placeholder="ornek@mail.com" />
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Telefon</label>
+                                    <input asp-for="CustomerPhone" class="form-control" placeholder="05xx xxx xx xx" />
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Adres</label>
+                                    <textarea asp-for="Address" class="form-control" rows="3" placeholder="Teslimat adresi..."></textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Kupon Kodu <span class="text-muted">(opsiyonel)</span></label>
+                                    <input asp-for="CouponCode" class="form-control" placeholder="Varsa kupon kodunu gir" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Ödeme Yöntemi -->
+                        <div class="card border-0 shadow-sm">
+                            <div class="card-body p-4">
+                                <h5 class="fw-bold mb-3">
+                                    <i class="fas fa-credit-card me-2" style="color:#5cb85c"></i>Ödeme Yöntemi
+                                </h5>
+                                <div class="mb-3">
+                                    <select asp-for="PaymentMethod" class="form-select" id="paymentMethodSelect">
+                                        <option value="">-- Ödeme Yöntemi Seçin --</option>
+                                        <option value="CreditCard">Kredi Kartı</option>
+                                        <option value="CashOnDelivery">Kapıda Ödeme</option>
+                                        <option value="BankTransfer">EFT / Havale</option>
+                                    </select>
+                                </div>
+
+                                <!-- Kredi Kartı Alanları (sadece CreditCard seçilince görünür) -->
+                                <div id="creditCardFields" style="display:none;">
+                                    <div class="mb-3">
+                                        <label class="form-label">Kart Numarası</label>
+                                        <input asp-for="CardNumber" class="form-control" placeholder="1234 5678 9012 3456" />
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Kart Üzerindeki İsim</label>
+                                        <input asp-for="CardHolderName" class="form-control" placeholder="AD SOYAD" />
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-6 mb-3">
+                                            <label class="form-label">Son Kullanma Tarihi</label>
+                                            <input asp-for="ExpiryDate" class="form-control" placeholder="AA/YY" />
+                                        </div>
+                                        <div class="col-6 mb-3">
+                                            <label class="form-label">CVV</label>
+                                            <input asp-for="CVV" class="form-control" placeholder="123" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- EFT Bilgisi (sadece BankTransfer seçilince görünür) -->
+                                <div id="bankTransferInfo" style="display:none;">
+                                    <div class="alert alert-info">
+                                        <i class="fas fa-info-circle me-2"></i>
+                                        Havale/EFT için IBAN: <strong>TR00 0000 0000 0000 0000 0000 00</strong><br>
+                                        <small>Açıklama kısmına adınızı soyadınızı yazmayı unutmayın.</small>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SAĞ: Sipariş Özeti -->
+                    <div class="col-lg-5">
+                        <div class="card border-0 shadow-sm">
+                            <div class="card-body p-4">
+                                <h5 class="fw-bold mb-3">
+                                    <i class="fas fa-shopping-bag me-2" style="color:#5cb85c"></i>Sipariş Özeti
+                                </h5>
+
+                                @if (cart != null && cart.CartItems.Any())
+                                {
+                                    foreach (var item in cart.CartItems)
+                                    {
+                                        <div class="d-flex justify-content-between align-items-center mb-3">
+                                            <div class="d-flex align-items-center">
+                                                <img src="@item.Product.ImageUrl" alt="@item.Product.ProductName"
+                                                     style="width:50px; height:50px; object-fit:contain; mix-blend-mode:multiply;" class="me-2">
+                                                <div>
+                                                    <div class="fw-semibold">@item.Product.ProductName</div>
+                                                    <small class="text-muted">@item.Quantity adet</small>
+                                                </div>
+                                            </div>
+                                            <span class="fw-bold">@((item.Product.Price * item.Quantity).ToString("C2", new System.Globalization.CultureInfo("tr-TR")))</span>
+                                        </div>
+                                    }
+
+                                    <hr>
+                                    <div class="d-flex justify-content-between fw-bold fs-5">
+                                        <span>Toplam</span>
+                                        <span style="color:#5cb85c">@total.ToString("C2", new System.Globalization.CultureInfo("tr-TR"))</span>
+                                    </div>
+                                }
+
+                                <button type="submit" class="btn w-100 mt-4 text-white fw-bold py-3"
+                                        style="background-color:#5cb85c; border-radius:25px;">
+                                    <i class="fas fa-check-circle me-2"></i>Siparişi Onayla
+                                </button>
+
+                                <a asp-controller="Cart" asp-action="Index"
+                                   class="btn btn-outline-secondary w-100 mt-2" style="border-radius:25px;">
+                                    <i class="fas fa-arrow-left me-2"></i>Sepete Dön
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+    </section>
+
+    @await Component.InvokeAsync("Footer")
+
+    <script src="/organic-html/assets/js/jquery-3.6.0.min.js"></script>
+    <script src="/organic-html/assets/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Ödeme yöntemine göre ilgili alanları göster/gizle
+        document.getElementById('paymentMethodSelect').addEventListener('change', function () {
+            var val = this.value;
+            document.getElementById('creditCardFields').style.display = (val === 'CreditCard') ? 'block' : 'none';
+            document.getElementById('bankTransferInfo').style.display = (val === 'BankTransfer') ? 'block' : 'none';
+        });
+    </script>
+
+</body>
+</html>

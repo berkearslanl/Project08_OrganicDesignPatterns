@@ -1,0 +1,23 @@
+@model List<Service>
+<!-- service section start -->
+<section class="service_setion2" data-aos="fade-up" data-aos-duration="2000">
+    <div class="service_content_wrap2">
+        <div class="container">
+            <div class="row services2_content d-flex justify-content-between">
+                @foreach (var x in Model)
+                {
+                    <div class="col-6 col-sm-4 col-lg-3">
+                        <div class="service_inner_content d-flex justify-content-center align-items-center"
+                             data-aos="fade-up" data-aos-duration="500">
+                            <div class="service_content_icon rounded-pill me-3">
+                                <img src="@x.IconUrl" alt="Organik Çiftlik">
+                            </div>
+                            <h6 class="service_content_title">@x.ServiceName</h6>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</section>
+<!-- service section end -->

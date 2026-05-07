@@ -1,0 +1,79 @@
+@model List<Category>
+@{
+    Layout = "_AdminLayout";
+    ViewBag.Title = "Kategoriler";
+    ViewBag.Subtitle = "Ürün kategorilerini yönet";
+    ViewBag.ActiveMenu = "categories";
+}
+
+<div class="row g-4">
+
+    <!-- KATEGORİ EKLE -->
+    <div class="col-lg-4">
+        <div class="admin-card">
+            <div class="card-header">
+                <span><i class="fas fa-plus-circle me-2" style="color:#5cb85c;"></i>Yeni Kategori</span>
+            </div>
+            <div class="card-body">
+                <form asp-action="CreateCategory" asp-controller="Admin" method="post">
+                    <div class="mb-3">
+                        <label class="form-label" style="font-size:13px;font-weight:600;color:#475569;">Kategori Adı</label>
+                        <input type="text" name="Name" class="form-control"
+                               placeholder="Kategori adı giriniz"
+                               style="border-radius:10px;font-size:14px;" />
+                    </div>
+                    <button type="submit" class="btn btn-green w-100">
+                        <i class="fas fa-plus me-1"></i> Kategori Ekle
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- KATEGORİ LİSTESİ -->
+    <div class="col-lg-8">
+        <div class="admin-card">
+            <div class="card-header">
+                <span><i class="fas fa-tags me-2" style="color:#5cb85c;"></i>Kategori Listesi</span>
+                <span style="font-size:13px;color:#94a3b8;">@ViewBag.TotalCategories kategori</span>
+            </div>
+            <div class="card-body p-0">
+                <table class="table admin-table mb-0">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Kategori Adı</th>
+                            <th>Ürün Sayısı</th>
+                            <th>İşlem</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var category in Model)
+                        {
+                            <tr>
+                                <td style="color:#94a3b8;font-size:13px;">@category.CategoryId</td>
+                                <td style="font-weight:600;">@category.CategoryName</td>
+                                <td>
+                                    <span class="status-badge status-blue">@category.Products?.Count ürün</span>
+                                </td>
+                                <td>
+                                    <div class="d-flex gap-1">
+                                        <form asp-action="DeleteCategory" asp-controller="Admin" method="post" class="d-inline"
+                                              onsubmit="return confirm('Bu kategoriyi silmek istediğinize emin misiniz?')">
+                                            <input type="hidden" name="id" value="@category.CategoryId" />
+                                            <button type="submit" class="btn-icon btn-icon-delete" title="Sil">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>

@@ -1,0 +1,127 @@
+@model List<Product>
+@{
+    Layout = "_AdminLayout";
+    ViewBag.Title = "Ürünler";
+    ViewBag.Subtitle = "Ürünleri görüntüle, ekle ve düzenle";
+    ViewBag.ActiveMenu = "products";
+}
+
+<!-- ÜRÜN EKLE FORMU -->
+<div class="admin-card mb-4">
+    <div class="card-header">
+        <span><i class="fas fa-plus-circle me-2" style="color:#5cb85c;"></i>Yeni Ürün Ekle</span>
+    </div>
+    <div class="card-body">
+        <form asp-action="CreateProduct" asp-controller="Admin" method="post">
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <label class="form-label" style="font-size:13px;font-weight:600;color:#475569;">Ürün Adı</label>
+                    <input type="text" name="ProductName" class="form-control" placeholder="Ürün adı" style="border-radius:10px;font-size:14px;" />
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label" style="font-size:13px;font-weight:600;color:#475569;">Fiyat (₺)</label>
+                    <input type="number" name="Price" step="0.01" class="form-control" placeholder="0.00" style="border-radius:10px;font-size:14px;" />
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label" style="font-size:13px;font-weight:600;color:#475569;">Stok</label>
+                    <input type="number" name="Stock" class="form-control" placeholder="0" style="border-radius:10px;font-size:14px;" />
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label" style="font-size:13px;font-weight:600;color:#475569;">Kategori</label>
+                    <select name="CategoryId" class="form-select" style="border-radius:10px;font-size:14px;">
+                        @if (ViewBag.Categories != null)
+                        {
+                            foreach (var cat in ViewBag.Categories)
+                            {
+                                <option value="@cat.CategoryId">@cat.CategoryName</option>
+                            }
+                        }
+                    </select>
+                </div>
+                <div class="col-md-2 d-flex align-items-end">
+                    <button type="submit" class="btn btn-green w-100">
+                        <i class="fas fa-plus me-1"></i> Ekle
+                    </button>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label" style="font-size:13px;font-weight:600;color:#475569;">Açıklama</label>
+                    <input type="text" name="Description" class="form-control" placeholder="Ürün açıklaması" style="border-radius:10px;font-size:14px;" />
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label" style="font-size:13px;font-weight:600;color:#475569;">Görsel URL</label>
+                    <input type="text" name="ImageUrl" class="form-control" placeholder="/images/urun.png" style="border-radius:10px;font-size:14px;" />
+                </div>
+                <div class="col-md-2 d-flex align-items-end gap-3">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="IsOrganic" value="true" id="isOrganic" />
+                        <label class="form-check-label" for="isOrganic" style="font-size:13px;color:#475569;">Organik</label>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- ÜRÜN LİSTESİ -->
+<div class="admin-card">
+    <div class="card-header">
+        <span><i class="fas fa-box-open me-2" style="color:#5cb85c;"></i>Ürün Listesi</span>
+        <span style="font-size:13px;color:#94a3b8;">@ViewBag.TotalProducts ürün</span>
+    </div>
+    <div class="card-body p-0">
+        <table class="table admin-table mb-0">
+            <thead>
+                <tr>
+                    <th>Görsel</th>
+                    <th>Ürün Adı</th>
+                    <th>Kategori</th>
+                    <th>Fiyat</th>
+                    <th>Stok</th>
+                    <th>Organik</th>
+                    <th>İşlem</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var product in Model)
+                {
+                    <tr>
+                        <td>
+                            <img src="@product.ImageUrl" alt="@product.ProductName"
+                                 style="width:44px;height:44px;object-fit:contain;mix-blend-mode:multiply;border-radius:8px;background:#f8f9fa;" />
+                        </td>
+                        <td style="font-weight:600;">@product.ProductName</td>
+                        <td><span class="status-badge status-blue">@product.Category?.CategoryName</span></td>
+                        <td style="font-weight:600;color:#5cb85c;">@product.Price.ToString("C2", new System.Globalization.CultureInfo("tr-TR"))</td>
+                        <td>
+                            <span class="status-badge @(product.Stock > 10 ? "status-green" : product.Stock > 0 ? "status-yellow" : "status-red")">
+                                @product.Stock adet
+                            </span>
+                        </td>
+                        <td>
+                            @if (product.IsOrganic)
+                            {
+                                <span class="status-badge status-green"><i class="fas fa-leaf me-1"></i>Organik</span>
+                            }
+                            else
+                            {
+                                <span class="status-badge status-gray">Standart</span>
+                            }
+                        </td>
+                        <td>
+                            <div class="d-flex gap-1">
+                                <form asp-action="DeleteProduct" asp-controller="Admin" method="post" class="d-inline"
+                                      onsubmit="return confirm('Bu ürünü silmek istediğinize emin misiniz?')">
+                                    <input type="hidden" name="id" value="@product.ProductId" />
+                                    <button type="submit" class="btn-icon btn-icon-delete" title="Sil">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+    </div>
+</div>

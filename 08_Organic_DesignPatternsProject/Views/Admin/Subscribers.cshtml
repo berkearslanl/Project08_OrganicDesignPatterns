@@ -1,0 +1,48 @@
+@model List<Subscriber>
+@{
+    Layout = "_AdminLayout";
+    ViewBag.Title = "Aboneler";
+    ViewBag.Subtitle = "Bülten abonelerini görüntüle";
+    ViewBag.ActiveMenu = "subscribers";
+}
+
+<div class="admin-card">
+    <div class="card-header">
+        <span><i class="fas fa-envelope me-2" style="color:#5cb85c;"></i>Abone Listesi</span>
+        <span style="font-size:13px;color:#94a3b8;">@ViewBag.TotalSubscribers abone</span>
+    </div>
+    <div class="card-body p-0">
+        <table class="table admin-table mb-0">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>E-posta</th>
+                    <th>Abone Tarihi</th>
+                    <th>Durum</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                @foreach (var subscriber in Model)
+                {
+                    int i = 1;
+                    <tr>
+                        <td style="color:#94a3b8;font-size:13px;">@i</td>
+                        <td>
+                            <div class="d-flex align-items-center gap-2">
+                                <div style="width:34px;height:34px;background:linear-gradient(135deg,#5cb85c,#3d8b3d);border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:13px;">
+                                    @subscriber.Email[0].ToString().ToUpper()
+                                </div>
+                                <span style="font-weight:500;">@subscriber.Email</span>
+                            </div>
+                        </td>
+                        <td style="color:#94a3b8;">@subscriber.SubscribedAt.ToString("dd.MM.yyyy HH:mm")</td>
+                        <td><span class="status-badge status-green">Aktif</span></td>
+                    </tr>
+                    i++;
+                }
+
+            </tbody>
+        </table>
+    </div>
+</div>

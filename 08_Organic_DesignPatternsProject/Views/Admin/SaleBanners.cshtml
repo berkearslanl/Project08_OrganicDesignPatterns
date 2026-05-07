@@ -1,0 +1,90 @@
+@model List<SaleBanner>
+@{
+    Layout = "_AdminLayout";
+    ViewBag.Title = "Kampanya Banner";
+    ViewBag.Subtitle = "Ana sayfadaki kampanya banner'larını yönet";
+    ViewBag.ActiveMenu = "salebanners";
+}
+
+<!-- KAMPANYA EKLE -->
+<div class="admin-card mb-4">
+    <div class="card-header">
+        <span><i class="fas fa-plus-circle me-2" style="color:#5cb85c;"></i>Yeni Kampanya Ekle</span>
+    </div>
+    <div class="card-body">
+        <form asp-action="CreateSaleBanner" asp-controller="Admin" method="post">
+            <div class="row g-3">
+                <div class="col-md-3">
+                    <label class="form-label" style="font-size:13px;font-weight:600;color:#475569;">Üst Başlık</label>
+                    <input type="text" name="Title1" class="form-control" placeholder="Örn: ORGANİK YAŞA" style="border-radius:10px;font-size:14px;" />
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label" style="font-size:13px;font-weight:600;color:#475569;">Alt Başlık</label>
+                    <input type="text" name="Title2" class="form-control" placeholder="Örn: Sezonluk Ürünlerde" style="border-radius:10px;font-size:14px;" />
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label" style="font-size:13px;font-weight:600;color:#475569;">İndirim Miktarı</label>
+                    <input type="text" name="DiscountAmount" class="form-control" placeholder="Örn: %30" style="border-radius:10px;font-size:14px;" />
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label" style="font-size:13px;font-weight:600;color:#475569;">Görsel URL</label>
+                    <input type="text" name="ImageUrl" class="form-control" placeholder="/images/shapes/shape2.png" style="border-radius:10px;font-size:14px;" />
+                </div>
+                <div class="col-md-2 d-flex align-items-end">
+                    <button type="submit" class="btn btn-green w-100">
+                        <i class="fas fa-plus me-1"></i> Ekle
+                    </button>
+                </div>
+                <div class="col-md-10">
+                    <label class="form-label" style="font-size:13px;font-weight:600;color:#475569;">Açıklama</label>
+                    <input type="text" name="Description" class="form-control" placeholder="Kampanya açıklama metni" style="border-radius:10px;font-size:14px;" />
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- KAMPANYA LİSTESİ -->
+<div class="admin-card">
+    <div class="card-header">
+        <span><i class="fas fa-percent me-2" style="color:#5cb85c;"></i>Kampanya Listesi</span>
+        <span style="font-size:13px;color:#94a3b8;">@Model.Count kampanya</span>
+    </div>
+    <div class="card-body p-0">
+        <table class="table admin-table mb-0">
+            <thead>
+                <tr>
+                    <th>Üst Başlık</th>
+                    <th>Alt Başlık</th>
+                    <th>İndirim</th>
+                    <th>Açıklama</th>
+                    <th>İşlem</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td style="font-weight:600;">@item.Title1</td>
+                        <td>@item.Title2</td>
+                        <td>
+                            <span class="status-badge status-red">@item.DiscountAmount</span>
+                        </td>
+                        <td style="color:#64748b;font-size:13px;">
+                            @(item.Description?.Length > 50 ? item.Description.Substring(0, 50) + "..." : item.Description)
+                        </td>
+                        <td>
+                            <form asp-action="DeleteSaleBanner" asp-controller="Admin" method="post" class="d-inline"
+                                  onsubmit="return confirm('Bu kampanyayı silmek istediğinize emin misiniz?')">
+                                <input type="hidden" name="id" value="@item.SaleBannerId" />
+                                <button type="submit" class="btn-icon btn-icon-delete" title="Sil">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

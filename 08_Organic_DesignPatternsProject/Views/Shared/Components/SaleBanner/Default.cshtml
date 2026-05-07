@@ -1,0 +1,44 @@
+@model List<SaleBanner>
+<!-- sale banner section start -->
+<section class="sale2_section" data-aos="fade-up" data-aos-duration="2000">
+    <div class="sale2_section_wrap sec_space_xxlarge d-flex justify-content-center align-items-center"
+         style="background-image: url(/organic-html/assets/images/backgrounds/bg20.png)">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6"></div>
+                <div class="col-lg-6">
+                    @foreach (var x in Model)
+                    {
+                        <div class="sale2_content_wrap ps-3">
+                            <div class="sale2_sub_title pb-3 position-relative">
+                                <img class="sub_title_bg" src="@x.ImageUrl" alt="">
+                                <h6 class="text-white text-uppercase position-absolute">@x.Title1</h6>
+                            </div>
+                            <div class="sale2_title py-2">
+                                <h2>
+                                    @x.Title2 <br>
+                                    <font class="text-effect">
+                                        @Html.Raw(x.DiscountAmount)
+                                        <span> </span>
+                                        <span>İ</span><span>n</span><span>d</span><span>i</span><span>r</span><span>i</span><span>m</span>
+                                    </font>
+                                </h2>
+                            </div>
+                            <div class="sale2_desc">
+                                <p>@x.Description</p>
+                            </div>
+                            <div class="sale2_btn load_more_3">
+                                <a href="/Shop/ShopList">
+                                    <button type="button" class="btn custom_btn rounded-pill px-5 py-3 text-white">
+                                        Kampanyayı Keşfet <i class="fas fa-long-arrow-alt-right"></i>
+                                    </button>
+                                </a>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- sale banner section end -->

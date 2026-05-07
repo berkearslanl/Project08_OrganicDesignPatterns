@@ -1,0 +1,90 @@
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anasayfa - Organik Dünya</title>
+    <link rel="shortcut icon" href="/organic-html/assets/images/icons/favicon.ico" type="image/x-icon">
+
+    <!-- Font Awesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+          integrity="sha512-Fo3rlrZj/k7ujTnHg4CGR2D7kSs0v4LLanw2qksYuRlEzO+tcaEPQogQ0KaoGN26/zrn20ImR1DfuLWnOo7aBA=="
+          crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Roboto:wght@400;500;700;900&family=Merriweather:ital,wght@0,400;0,700;0,900;1,700;1,900&display=swap"
+          rel="stylesheet">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="/organic-html/assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/organic-html/assets/css/aos.css">
+    <link rel="stylesheet" href="/organic-html/assets/css/magnific-popup.css">
+    <link rel="stylesheet" href="/organic-html/assets/css/nice-select.css">
+    <link rel="stylesheet" href="/organic-html/assets/css/slick-theme.css">
+    <link rel="stylesheet" href="/organic-html/assets/css/slick.css">
+    <link rel="stylesheet" href="/organic-html/assets/css/style.css">
+</head>
+
+<body>
+    <div class="body-wrap overflow-hidden">
+
+        <div class="backtotop">
+            <a href="#!" class="scroll">
+                <i class="far fa-arrow-up fw-bold"></i>
+            </a>
+        </div>
+
+        @await Component.InvokeAsync("Header")
+
+        <main>
+
+            @await Component.InvokeAsync("Banner")
+
+            @await Component.InvokeAsync("Services")
+
+            @await Component.InvokeAsync("FeaturedProducts")
+
+            @await Component.InvokeAsync("TrendSection")
+
+            @await Component.InvokeAsync("QualitySection")
+
+            @await Component.InvokeAsync("SaleBanner")
+
+            @await Component.InvokeAsync("NewArrivals")
+
+            @await Component.InvokeAsync("InstagramSection")
+
+            <section class="brand_section sec_bottom_space_50" data-aos="fade-up" data-aos-duration="2000">
+                <div class="container">
+                    <div class="brand_thumb text-center">
+                        <img src="/organic-html/assets/images/brands/brand1.png" alt="Marka Ortaklarımız">
+                    </div>
+                </div>
+            </section>
+
+        </main>
+        @await Component.InvokeAsync("Footer")
+
+    </div>
+    <!-- body-wrap end -->
+
+    <!-- JS -->
+    <script src="/organic-html/assets/js/jquery.min.js"></script>
+    <script src="/organic-html/assets/js/bootstrap.bundle.min.js"></script>
+    <script src="/organic-html/assets/js/aos.js"></script>
+    <script src="/organic-html/assets/js/magnific-popup.min.js"></script>
+    <script src="/organic-html/assets/js/nice-select.min.js"></script>
+    <script src="/organic-html/assets/js/slick.min.js"></script>
+    <script src="/organic-html/assets/js/countdown.min.js"></script>
+    <script src="/organic-html/assets/js/custom.js"></script>
+
+</body>
+</html>

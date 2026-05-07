@@ -1,0 +1,73 @@
+@model List<Trend>
+@{
+    Layout = "_AdminLayout";
+    ViewBag.Title = "Trend Bölümü";
+    ViewBag.Subtitle = "Ana sayfadaki trend kartlarını ekle ve düzenle";
+    ViewBag.ActiveMenu = "trends";
+}
+
+<!-- TREND EKLE -->
+<div class="admin-card mb-4">
+    <div class="card-header">
+        <span><i class="fas fa-plus-circle me-2" style="color:#5cb85c;"></i>Yeni Trend Ekle</span>
+    </div>
+    <div class="card-body">
+        <form asp-action="CreateTrend" asp-controller="Admin" method="post">
+            <div class="row g-3">
+                <div class="col-md-5">
+                    <label class="form-label" style="font-size:13px;font-weight:600;color:#475569;">Başlık</label>
+                    <input type="text" name="Title" class="form-control" placeholder="Örn: Taze Organik Sebzelerimizi Keşfedin" style="border-radius:10px;font-size:14px;" />
+                </div>
+                <div class="col-md-5">
+                    <label class="form-label" style="font-size:13px;font-weight:600;color:#475569;">Görsel URL</label>
+                    <input type="text" name="ImageUrl" class="form-control" placeholder="/images/trends/trend4.png" style="border-radius:10px;font-size:14px;" />
+                </div>
+                <div class="col-md-2 d-flex align-items-end">
+                    <button type="submit" class="btn btn-green w-100">
+                        <i class="fas fa-plus me-1"></i> Ekle
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- TREND LİSTESİ -->
+<div class="admin-card">
+    <div class="card-header">
+        <span><i class="fas fa-fire me-2" style="color:#5cb85c;"></i>Trend Listesi</span>
+        <span style="font-size:13px;color:#94a3b8;">@Model.Count trend</span>
+    </div>
+    <div class="card-body p-0">
+        <table class="table admin-table mb-0">
+            <thead>
+                <tr>
+                    <th>Görsel</th>
+                    <th>Başlık</th>
+                    <th>İşlem</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            <img src="@item.ImageUrl" alt="@item.Title"
+                                 style="width:80px;height:55px;object-fit:cover;border-radius:8px;background:#f8f9fa;" />
+                        </td>
+                        <td style="font-weight:600;">@item.Title</td>
+                        <td>
+                            <form asp-action="DeleteTrend" asp-controller="Admin" method="post" class="d-inline"
+                                  onsubmit="return confirm('Bu trend kartını silmek istediğinize emin misiniz?')">
+                                <input type="hidden" name="id" value="@item.TrendId" />
+                                <button type="submit" class="btn-icon btn-icon-delete" title="Sil">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

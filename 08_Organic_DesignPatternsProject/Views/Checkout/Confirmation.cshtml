@@ -1,0 +1,140 @@
+﻿@model _08_Organic_DesignPatternsProject.Entities.Order
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sipariş Onayı - Organik</title>
+    <link rel="stylesheet" href="/organic-html/assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/organic-html/assets/css/all.min.css">
+    <link rel="stylesheet" href="/organic-html/assets/css/style.css">
+</head>
+<body>
+
+    @await Component.InvokeAsync("Header")
+
+    <section class="py-5" style="background-color: #f8f9fa;">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-7">
+
+                    <!-- Başarı Mesajı -->
+                    <div class="card border-0 shadow-sm text-center p-5 mb-4">
+                        <div class="mb-3">
+                            <i class="fas fa-check-circle fa-4x" style="color:#5cb85c"></i>
+                        </div>
+                        <h3 class="fw-bold">Siparişiniz Alındı!</h3>
+                        <p class="text-muted">Sipariş No: <strong>#@Model.OrderId</strong></p>
+                        <p class="text-muted mb-0">
+                            Siparişiniz en kısa sürede hazırlanacaktır. Teşekkür ederiz.
+                        </p>
+                    </div>
+
+                    <!-- Sipariş Detayları -->
+                    <div class="card border-0 shadow-sm mb-4">
+                        <div class="card-body p-4">
+                            <h5 class="fw-bold mb-3">
+                                <i class="fas fa-user me-2" style="color:#5cb85c"></i>Müşteri Bilgileri
+                            </h5>
+                            <table class="table table-borderless mb-0">
+                                <tr>
+                                    <td class="text-muted">Ad Soyad</td>
+                                    <td class="fw-semibold">@Model.CustomerName</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-muted">E-posta</td>
+                                    <td class="fw-semibold">@Model.CustomerEmail</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-muted">Telefon</td>
+                                    <td class="fw-semibold">@Model.CustomerPhone</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-muted">Adres</td>
+                                    <td class="fw-semibold">@Model.Address</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-muted">Ödeme Yöntemi</td>
+                                    <td class="fw-semibold">
+                                        @switch (Model.PaymentMethod)
+                                        {
+                                            case _08_Organic_DesignPatternsProject.Enums.PaymentMethod.CreditCard:
+                                                <span><i class="fas fa-credit-card me-1"></i>Kredi Kartı</span>
+                                                break;
+                                            case _08_Organic_DesignPatternsProject.Enums.PaymentMethod.CashOnDelivery:
+                                                <span><i class="fas fa-money-bill me-1"></i>Kapıda Ödeme</span>
+                                                break;
+                                            case _08_Organic_DesignPatternsProject.Enums.PaymentMethod.BankTransfer:
+                                                <span><i class="fas fa-university me-1"></i>EFT / Havale</span>
+                                                break;
+                                        }
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-muted">Durum</td>
+                                    <td>
+                                        <span class="badge" style="background-color:#5cb85c">@Model.Status</span>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Ürünler -->
+                    <div class="card border-0 shadow-sm mb-4">
+                        <div class="card-body p-4">
+                            <h5 class="fw-bold mb-3">
+                                <i class="fas fa-shopping-bag me-2" style="color:#5cb85c"></i>Sipariş Edilen Ürünler
+                            </h5>
+                            @foreach (var item in Model.OrderItems)
+                            {
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <div>
+                                        <div class="fw-semibold">@item.Product.ProductName</div>
+                                        <small class="text-muted">@item.Quantity adet × @item.UnitPrice.ToString("C2", new System.Globalization.CultureInfo("tr-TR"))</small>
+                                    </div>
+                                    <span class="fw-bold">
+                                        @((item.Quantity * item.UnitPrice).ToString("C2", new System.Globalization.CultureInfo("tr-TR")))
+                                    </span>
+                                </div>
+                            }
+                            <hr>
+                            <div class="d-flex justify-content-between fw-bold fs-5">
+                                <span>Toplam</span>
+                                <span style="color:#5cb85c">
+                                    @Model.TotalAmount.ToString("C2", new System.Globalization.CultureInfo("tr-TR"))
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Butonlar -->
+                    <div class="d-flex gap-3">
+                        <a asp-controller="Main" asp-action="Index"
+                           class="btn w-50 text-white fw-bold py-3"
+                           style="background-color:#5cb85c; border-radius:25px;">
+                            <i class="fas fa-home me-2"></i>Anasayfaya Dön
+                        </a>
+                        <a asp-controller="Shop" asp-action="ShopList"
+                           class="btn btn-outline-secondary w-50 fw-bold py-3"
+                           style="border-radius:25px;">
+                            <i class="fas fa-store me-2"></i>Alışverişe Devam Et
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    @await Component.InvokeAsync("Footer")
+
+    <script src="/organic-html/assets/js/jquery-3.6.0.min.js"></script>
+    <script src="/organic-html/assets/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

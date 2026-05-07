@@ -1,0 +1,106 @@
+@model List<Coupon>
+@{
+    Layout = "_AdminLayout";
+    ViewBag.Title = "Kuponlar";
+    ViewBag.Subtitle = "İndirim kuponlarını yönet";
+    ViewBag.ActiveMenu = "coupons";
+}
+
+<div class="row g-4">
+
+    <!-- KUPON EKLE -->
+    <div class="col-lg-4">
+        <div class="admin-card">
+            <div class="card-header">
+                <span><i class="fas fa-plus-circle me-2" style="color:#5cb85c;"></i>Yeni Kupon</span>
+            </div>
+            <div class="card-body">
+                <form asp-action="CreateCoupon" asp-controller="Admin" method="post">
+                    <div class="mb-3">
+                        <label class="form-label" style="font-size:13px;font-weight:600;color:#475569;">Kupon Kodu</label>
+                        <input type="text" name="Code" class="form-control"
+                               placeholder="YAZA2025"
+                               style="border-radius:10px;font-size:14px;text-transform:uppercase;" />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" style="font-size:13px;font-weight:600;color:#475569;">İndirim Tutarı (₺)</label>
+                        <input type="number" name="DiscountAmount" step="0.01" class="form-control"
+                               placeholder="50.00"
+                               style="border-radius:10px;font-size:14px;" />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" style="font-size:13px;font-weight:600;color:#475569;">Son Kullanma Tarihi</label>
+                        <input type="date" name="ExpiryDate" class="form-control"
+                               style="border-radius:10px;font-size:14px;" />
+                    </div>
+                    <button type="submit" class="btn btn-green w-100">
+                        <i class="fas fa-plus me-1"></i> Kupon Ekle
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- KUPON LİSTESİ -->
+    <div class="col-lg-8">
+        <div class="admin-card">
+            <div class="card-header">
+                <span><i class="fas fa-ticket-alt me-2" style="color:#5cb85c;"></i>Kupon Listesi</span>
+            </div>
+            <div class="card-body p-0">
+                <table class="table admin-table mb-0">
+                    <thead>
+                        <tr>
+                            <th>Kod</th>
+                            <th>İndirim</th>
+                            <th>Son Kullanma</th>
+                            <th>Durum</th>
+                            <th>İşlem</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                            @foreach (var coupon in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        <span style="font-weight:700;font-family:monospace;background:#f1f5f9;padding:4px 10px;border-radius:6px;font-size:13px;">
+                                            @coupon.Code
+                                        </span>
+                                    </td>
+                                    <td style="font-weight:600;color:#5cb85c;">
+                                        @coupon.DiscountAmount.ToString("C2", new System.Globalization.CultureInfo("tr-TR"))
+                                    </td>
+                                    <td style="color:#94a3b8;">@coupon.ExpiryDate.ToString("dd.MM.yyyy")</td>
+                                    <td>
+                                        @if (coupon.IsUsed)
+                                        {
+                                            <span class="status-badge status-gray">Kullanıldı</span>
+                                        }
+                                        else if (coupon.ExpiryDate < DateTime.Now)
+                                        {
+                                            <span class="status-badge status-red">Süresi Doldu</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="status-badge status-green">Aktif</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        <form asp-action="DeleteCoupon" asp-controller="Admin" method="post" class="d-inline"
+                                              onsubmit="return confirm('Bu kuponu silmek istediğinize emin misiniz?')">
+                                            <input type="hidden" name="id" value="@coupon.CouponId" />
+                                            <button type="submit" class="btn-icon btn-icon-delete" title="Sil">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            }
+                        
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
